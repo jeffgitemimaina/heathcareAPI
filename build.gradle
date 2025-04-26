@@ -1,8 +1,7 @@
 plugins {
+	id 'org.springframework.boot' version '3.3.4'
+	id 'io.spring.dependency-management' version '1.1.6'
 	id 'java'
-	id 'war'
-	id 'org.springframework.boot' version '3.4.5'
-	id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.healthcare_api'
@@ -15,41 +14,32 @@ java {
 }
 
 repositories {
-	maven {
-		url "https://repo.maven.apache.org/maven2"
-		metadataSources {
-			mavenPom()
-			artifact()
-		}
-	}
+	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// Spring Boot dependencies
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation "mysql:mysql-connector-java:8.0.33"
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'mysql:mysql-connector-java:8.0.33'
 
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	// Jakarta Validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
-	implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
-	implementation 'com.h2database:h2'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	// Lombok
+	implementation 'org.projectlombok:lombok:1.18.34'
+	annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-	// Testing
-	testImplementation platform('org.junit:junit-bom:5.10.2')
-	testImplementation 'org.junit.jupiter:junit-jupiter-api'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	// Test dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 }
-
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
 tasks.named('bootJar') {
 	archiveFileName = 'healthcare-api-backend-0.0.1-SNAPSHOT.jar'
 }
