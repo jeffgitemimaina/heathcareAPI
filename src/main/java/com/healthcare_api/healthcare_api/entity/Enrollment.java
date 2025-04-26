@@ -4,16 +4,18 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Data
 @Table(name = "enrollment")
+@Data
 public class Enrollment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "client_id", nullable = false)
-    private Long clientId;
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
-    @Column(name = "program_id", nullable = false)
-    private Long programId;
+    @ManyToOne
+    @JoinColumn(name = "program_id", nullable = false)
+    private Program program;
 }

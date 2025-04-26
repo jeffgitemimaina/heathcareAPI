@@ -1,6 +1,5 @@
 package com.healthcare_api.healthcare_api.controller;
 
-
 import com.healthcare_api.healthcare_api.dto.EnrollmentDTO;
 import com.healthcare_api.healthcare_api.service.EnrollmentService;
 import jakarta.validation.Valid;

@@ -1,6 +1,5 @@
 package com.healthcare_api.healthcare_api.controller;
 
-
 import com.healthcare_api.healthcare_api.dto.ClientDTO;
 import com.healthcare_api.healthcare_api.service.ClientService;
 import jakarta.validation.Valid;

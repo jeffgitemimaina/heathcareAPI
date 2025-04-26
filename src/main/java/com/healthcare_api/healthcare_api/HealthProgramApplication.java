@@ -15,7 +15,7 @@ public class HealthProgramApplication implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:5000", "*") // Allow Flask and Postman
+				.allowedOrigins("http://localhost:5000, https://healthcarefrontend-fwaf.onrender.com")
 				.allowedMethods("GET", "POST", "PUT", "DELETE")
 				.allowedHeaders("*")
 				.allowCredentials(false);

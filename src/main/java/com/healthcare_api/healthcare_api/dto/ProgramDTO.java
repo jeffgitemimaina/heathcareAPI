@@ -1,7 +1,7 @@
 package com.healthcare_api.healthcare_api.dto;
 
-import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class ProgramDTO {

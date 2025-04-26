@@ -1,15 +1,14 @@
 package com.healthcare_api.healthcare_api.service;
 
-
 import com.healthcare_api.healthcare_api.dto.ClientDTO;
 import com.healthcare_api.healthcare_api.dto.ProgramDTO;
 import com.healthcare_api.healthcare_api.entity.Client;
+import com.healthcare_api.healthcare_api.entity.Enrollment;
 import com.healthcare_api.healthcare_api.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,33 +17,47 @@ public class ClientService {
     private final ClientRepository clientRepository;
 
     public ClientDTO createClient(ClientDTO clientDTO) {
+        if (clientDTO.getFirstName() == null || clientDTO.getLastName() == null) {
+            throw new IllegalArgumentException("First name and last name are required");
+        }
         Client client = new Client();
         client.setFirstName(clientDTO.getFirstName());
         client.setLastName(clientDTO.getLastName());
         client.setDob(clientDTO.getDob());
         client = clientRepository.save(client);
-        clientDTO.setId(client.getId());
-        return clientDTO;
+
+        ClientDTO result = new ClientDTO();
+        result.setId(client.getId());
+        result.setFirstName(client.getFirstName());
+        result.setLastName(client.getLastName());
+        result.setDob(client.getDob());
+        return result;
     }
 
     public List<ClientDTO> searchClients(String query) {
-        return clientRepository.searchClients(query).stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        Long id = null;
+        try {
+            id = Long.parseLong(query);
+        } catch (NumberFormatException ignored) {
+        }
+        return clientRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrId(query, query, id)
+                .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public ClientDTO getClient(Long id) {
-        Optional<Client> client = clientRepository.findById(id);
-        return client.map(this::mapToDTO).orElseThrow(() -> new RuntimeException("Client not found"));
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        return toDTO(client);
     }
 
-    private ClientDTO mapToDTO(Client client) {
+    private ClientDTO toDTO(Client client) {
         ClientDTO dto = new ClientDTO();
         dto.setId(client.getId());
         dto.setFirstName(client.getFirstName());
         dto.setLastName(client.getLastName());
         dto.setDob(client.getDob());
-        dto.setPrograms(client.getPrograms().stream()
+        List<ProgramDTO> programs = client.getEnrollments().stream()
+                .map(Enrollment::getProgram)
                 .map(program -> {
                     ProgramDTO programDTO = new ProgramDTO();
                     programDTO.setId(program.getId());
@@ -52,7 +65,8 @@ public class ClientService {
                     programDTO.setDescription(program.getDescription());
                     return programDTO;
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        dto.setPrograms(programs);
         return dto;
     }
 }
