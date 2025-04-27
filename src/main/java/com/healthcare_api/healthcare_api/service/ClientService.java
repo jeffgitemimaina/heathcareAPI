@@ -40,7 +40,7 @@ public class ClientService {
             id = Long.parseLong(query);
         } catch (NumberFormatException ignored) {
         }
-        return clientRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrId(query, query, id)
+        return clientRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrId(query, id)
                 .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
