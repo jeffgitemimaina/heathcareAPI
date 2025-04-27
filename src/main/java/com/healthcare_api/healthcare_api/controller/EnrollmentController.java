@@ -5,10 +5,7 @@ import com.healthcare_api.healthcare_api.service.EnrollmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/enrollments")
@@ -18,7 +15,7 @@ public class EnrollmentController {
 
     @PostMapping
     public ResponseEntity<Void> enrollClient(@Valid @RequestBody EnrollmentDTO enrollmentDTO) {
-        enrollmentService.enrollClient(enrollmentDTO);
+        enrollmentService.enrollClient(enrollmentDTO.getClientId(), enrollmentDTO.getProgramId());
         return ResponseEntity.ok().build();
     }
 }
