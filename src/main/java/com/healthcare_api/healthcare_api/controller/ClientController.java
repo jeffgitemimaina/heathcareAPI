@@ -17,16 +17,19 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientDTO> createClient(@Valid @RequestBody ClientDTO clientDTO) {
-        return ResponseEntity.ok(clientService.createClient(clientDTO));
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<ClientDTO>> searchClients(@RequestParam String query) {
-        return ResponseEntity.ok(clientService.searchClients(query));
+        ClientDTO createdClient = clientService.createClient(clientDTO);
+        return ResponseEntity.ok(createdClient);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientDTO> getClient(@PathVariable Long id) {
-        return ResponseEntity.ok(clientService.getClient(id));
+        ClientDTO client = clientService.getClient(id);
+        return ResponseEntity.ok(client);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ClientDTO>> searchClients(@RequestParam String query) {
+        List<ClientDTO> clients = clientService.searchClients(query);
+        return ResponseEntity.ok(clients);
     }
 }
